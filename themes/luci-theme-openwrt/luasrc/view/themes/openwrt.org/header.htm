@@ -129,14 +129,6 @@
 	</span>
 </div>
 
-<% if #categories > 1 then %>
-	<ul id="modemenu">
-		<% for i, r in ipairs(categories) do %>
-			<li><a<% if request[1] == r then %> class="active"<%end%> href="<%=controller%>/<%=r%>/"><%=striptags(translate(tree.nodes[r].title))%></a></li>
-		<% end %>
-	</ul>
-<% end %>
-
 <%
 if tree.nodes[category] and tree.nodes[category].ucidata then
 	local ucic = 0

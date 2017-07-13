@@ -1035,6 +1035,10 @@ function protocol.adminlink(self)
 	return dsp.build_url("admin", "network", "network", self.sid)
 end
 
+function protocol.sdclink(self)
+	return dsp.build_url("sdc", "network", "network", self.sid)
+end
+
 
 interface = utl.class()
 
@@ -1136,6 +1140,12 @@ end
 function interface.adminlink(self)
 	if self.wif then
 		return self.wif:adminlink()
+	end
+end
+
+function interface.sdclink(self)
+	if self.wif then
+		return self.wif:sdclink()
 	end
 end
 
@@ -1539,6 +1549,10 @@ end
 
 function wifinet.adminlink(self)
 	return dsp.build_url("admin", "network", "wireless", self.netid)
+end
+
+function wifinet.sdclink(self)
+	return dsp.build_url("sdc", "network", "wireless", self.netid)
 end
 
 function wifinet.get_network(self)
