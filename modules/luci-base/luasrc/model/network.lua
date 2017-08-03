@@ -280,6 +280,10 @@ function init(cursor)
 	return _M
 end
 
+function get_Wireless(self)                                                                                                
+        return _uci_real:get("wireless", "radio0", "disabled")                                                         
+end
+
 function save(self, ...)
 	_uci_real:save(...)
 	_uci_real:load(...)

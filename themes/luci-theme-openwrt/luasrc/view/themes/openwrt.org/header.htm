@@ -80,7 +80,7 @@
 	</ul>
 	<br style="clear:both" />
 <%
-			if selected_node then
+			if selected_node and level < 2 then
 				subtree(prefix .. selected_name .. "/", selected_node, level + 1)
 			end
 %>

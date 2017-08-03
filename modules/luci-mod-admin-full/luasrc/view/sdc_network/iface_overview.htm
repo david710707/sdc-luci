@@ -207,6 +207,9 @@
 			</tr>
 			<%
 				for i, net in ipairs(netlist) do
+                                        if ntm:get_Wireless() == "1" and net[1]:upper() == "WIFI" then                                                       
+                                                break                                                                                                   
+                                        end 
 					local z = net[3]
 					local c = z and z:get_color() or "#EEEEEE"
 					local t = z and translate("Part of zone %q" % z:name()) or translate("No zone assigned")
