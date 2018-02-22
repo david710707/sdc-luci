@@ -5,6 +5,17 @@
 -%>
 
 <%
+	local syncstatusTmp = luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkTimeNtpSyncStatus --UnLock")
+	local timezoneTmp = luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkTimeTimezone --UnLock")
+	local brightnessTmp = luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkHwBrightness --UnLock")
+	local displayformatTmp = luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkHwTimeFormat --UnLock")
+
+	if syncstatusTmp == "0\n" then
+		syncstatusTmp = luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkTimeNtpSyncSource --UnLock") .. " - [ Sync ]"
+	else
+		syncstatusTmp = luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkTimeNtpSyncSource --UnLock") .. " - [ Out Of Sync ]"
+	end
+
 	local fs = require "nixio.fs"
 	local util = require "luci.util"
 	local stat = require "luci.tools.status"
@@ -48,6 +59,10 @@
 			""):match("%d+")) or 4096
 
 		local rv = {
+			syncstatus = syncstatusTmp,
+			timezone = timezoneTmp,
+			brightness = brightnessTmp,
+			displayformat = displayformatTmp,
 			uptime     = sysinfo.uptime or 0,
 			localtime  = os.date(),
 			loadavg    = sysinfo.load or { 0, 0, 0 },
@@ -547,6 +562,19 @@
 			if (e = document.getElementById('conns'))
 				e.innerHTML = progressbar(info.conncount, info.connmax);
 
+			if (e = document.getElementById('syncstatus'))
+				e.innerHTML = info.syncstatus;
+
+                        if (e = document.getElementById('timezone'))
+                                e.innerHTML = info.timezone;
+
+                        if (e = document.getElementById('brightness'))
+                                e.innerHTML = info.brightness;
+
+                        if (e = document.getElementById('displayformat'))
+                                e.innerHTML = info.displayformat;
+
+
 		}
 	);
 //]]></script>
@@ -558,38 +586,13 @@
 
 	<table width="100%" cellspacing="10">
 		<tr><td width="33%"><%:Hostname%></td><td><%=luci.sys.hostname() or "?"%></td></tr>
-		<tr><td width="33%"><%:Model%></td><td><%=pcdata(boardinfo.model or boardinfo.system or "?")%></td></tr>
 		<tr><td width="33%"><%:Firmware Version%></td><td>
-			<%=pcdata(ver.distname)%> <%=pcdata(ver.distversion)%> /
-			<%=pcdata(ver.luciname)%> (<%=pcdata(ver.luciversion)%>)
+			<%=pcdata(ver.sdcname)%> (<%=pcdata(ver.sdcversion)%>)
 		</td></tr>
-		<tr><td width="33%"><%:Kernel Version%></td><td><%=unameinfo.release or "?"%></td></tr>
 		<tr><td width="33%"><%:Local Time%></td><td id="localtime">-</td></tr>
 		<tr><td width="33%"><%:Uptime%></td><td id="uptime">-</td></tr>
-		<tr><td width="33%"><%:Load Average%></td><td id="loadavg">-</td></tr>
 	</table>
 </fieldset>
-
-<fieldset class="cbi-section">
-	<legend><%:Memory%></legend>
-
-	<table width="100%" cellspacing="10">
-		<tr><td width="33%"><%:Total Available%></td><td id="memtotal">-</td></tr>
-		<tr><td width="33%"><%:Free%></td><td id="memfree">-</td></tr>
-		<tr><td width="33%"><%:Buffered%></td><td id="membuff">-</td></tr>
-	</table>
-</fieldset>
-
-<% if swapinfo.total > 0 then %>
-<fieldset class="cbi-section">
-	<legend><%:Swap%></legend>
-
-	<table width="100%" cellspacing="10">
-		<tr><td width="33%"><%:Total Available%></td><td id="swaptotal">-</td></tr>
-		<tr><td width="33%"><%:Free%></td><td id="swapfree">-</td></tr>
-	</table>
-</fieldset>
-<% end %>
 
 <fieldset class="cbi-section">
 	<legend><%:Network%></legend>
@@ -609,7 +612,6 @@
 			</tr></table>
 		</td></tr>
 		<% end %>
-		<tr><td width="33%"><%:Active Connections%></td><td id="conns">-</td></tr>
 	</table>
 </fieldset>
 
@@ -626,6 +628,17 @@
        </table>
 </fieldset>
 <% end %>
+
+<fieldset class="cbi-section">
+	<legend><%:Clock Status%></legend>
+
+	<table width="100%" cellspacing="10">
+		<tr><td width="33%"><%:Sync Status%></td><td id="syncstatus">-</td></tr>
+		<tr><td width="33%"><%:TimeZone%></td><td id="timezone">-</td></tr>
+		<tr><td width="33%"><%:Brightness%></td><td id="brightness">-</td></tr>
+		<tr><td width="33%"><%:Display Format%></td><td id="displayformat">-</td></tr>
+	</table>
+</fieldset>
 
 <%-
 	local incdir = util.libpath() .. "/view/admin_status/index/"

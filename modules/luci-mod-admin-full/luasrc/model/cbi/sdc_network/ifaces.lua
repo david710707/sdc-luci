@@ -12,7 +12,7 @@ arg[1] = arg[1] or ""
 
 local has_dnsmasq  = fs.access("/etc/config/dhcp")
 
-m = Map("network", translate("Interfaces") .. " - " .. arg[1]:upper(), translate("On this page you can configure the network interfaces. You can bridge several interfaces by ticking the \"bridge interfaces\" field and enter the names of several network interfaces separated by spaces. You can also use <abbr title=\"Virtual Local Area Network\">VLAN</abbr> notation <samp>INTERFACE.VLANNR</samp> (<abbr title=\"for example\">e.g.</abbr>: <samp>eth0.1</samp>)."))
+m = Map("network", translate("Interfaces") .. " - " .. arg[1]:upper(), translate("On this page you can configure the network interfaces."))
 m.redirect = luci.dispatcher.build_url("sdc", "network", "network")
 m:chain("wireless")
 

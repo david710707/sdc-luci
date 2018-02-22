@@ -10,7 +10,7 @@ local conf  = require "luci.config"
 local m, s, o
 local has_ntpd = fs.access("/sysconf/net-snmp/snmp/")
 
-m = Map("system", translate("System"), translate("Here you can configure the basic aspects of your device like its hostname or the timezone."))
+m = Map("system", translate("SNMP"), translate("Here you can configure the SNMP server."))
 m:chain("luci")
 
 ---------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ m:chain("luci")
 -- NTP Client
 --
 
-s = m:section(TypedSection, "system", translate("NTP Setting"))
+s = m:section(TypedSection, "system", translate("SNMP Setting"))
 s.anonymous = true
 s.addremove = false
 

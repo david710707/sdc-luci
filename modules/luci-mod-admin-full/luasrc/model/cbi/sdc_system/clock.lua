@@ -10,7 +10,7 @@ local conf  = require "luci.config"
 local m, s, o
 local has_ntpd = fs.access("/usr/sbin/ntpd")
 
-m = Map("system", translate("System"), translate("Here you can configure the basic aspects of your device like its hostname or the timezone."))
+m = Map("system", translate("NTP"), translate("Here you can configure the NTP server."))
 m:chain("luci")
 
 ---------------------------------------------------------------------------------
