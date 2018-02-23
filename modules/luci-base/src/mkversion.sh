@@ -21,4 +21,7 @@ end
 
 luciname    = "${3:-LuCI}"
 luciversion = "${2:-Git}"
+
+sdcname     = "SDC NTP Clock"
+sdcversion  = "2018.02.23"
 EOF
