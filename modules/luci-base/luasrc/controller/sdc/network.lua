@@ -67,16 +67,16 @@ function index()
 		page.leaf   = true
 		page.subindex = true
 
-		if page.inreq then
-			uci:foreach("network", "interface",
-				function (section)
-					local ifc = section[".name"]
-					if ifc ~= "loopback" then
-						entry({"sdc", "network", "network", ifc},
-						true, ifc:upper())
-					end
-				end)
-		end
+--		if page.inreq then
+--			uci:foreach("network", "interface",
+--				function (section)
+--					local ifc = section[".name"]
+--					if ifc ~= "loopback" then
+--						entry({"sdc", "network", "network", ifc},
+--						true, ifc:upper())
+--					end
+--				end)
+--		end
 --	end
 end
 

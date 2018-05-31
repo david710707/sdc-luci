@@ -69,10 +69,10 @@ if network:has_ipv6() then
 	m.pageaction = true
 end
 
-s = mm:section(NamedSection, "radio0", "wifi-iface", translate("Interface Configuration"))
-mode = s:option(ListValue, "disabled", translate("Mode"))
-mode.override_values = true
-mode:value("1", translate("POE"))
-mode:value("0", translate("Wireless"))
+--s = mm:section(NamedSection, "radio0", "wifi-iface", translate("Interface Configuration"))
+--mode = s:option(ListValue, "disabled", translate("Mode"))
+--mode.override_values = true
+--mode:value("1", translate("POE"))
+--mode:value("0", translate("Wireless"))
 
 return mm, m
