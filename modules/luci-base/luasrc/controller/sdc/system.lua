@@ -9,10 +9,7 @@ function index()
 
 	entry({"sdc", "system"}, alias("sdc", "system", "system"), _("System"), 30).index = true
 	entry({"sdc", "system", "system"}, cbi("sdc_system/system"), _("System"), 1)
-	entry({"sdc", "system", "clocksystem"}, cbi("sdc_system/clocksystem"), _("Clock"), 2)
-	entry({"sdc", "system", "clock"}, cbi("sdc_system/clock"), _("NTP"), 3)
-	entry({"sdc", "system", "ntp"}, cbi("sdc_system/ntp"), _("SNMP"), 4)
-	entry({"sdc", "system", "admin"}, cbi("sdc_system/admin"), _("Administration"), 5)
+	entry({"sdc", "system", "admin"}, cbi("sdc_system/admin"), _("Administration"), 2)
 
 	entry({"sdc", "system", "flashops"}, call("action_flashops"), _("Backup / Flash Firmware"), 70)
 	entry({"sdc", "system", "flashops", "backupfiles"}, form("sdc_system/backupfiles"))
