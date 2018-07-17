@@ -624,7 +624,7 @@ function o.write(self, section, value)
 	fs.writefile("/SDC/Clock.conf", v)
 end
 
-o = s:option(Value, "ntpclientinterval", translate("Interval"))
+o = s:option(Value, "ntpclientinterval", translate("Interval (sec)"))
 o.datatype = "string"
 function o.cfgvalue(self, section)
     --return fs.readfile("/SDC/Clock.conf") or ""
@@ -649,7 +649,7 @@ function o.write(self, section, value)
 	fs.writefile("/SDC/Clock.conf", v)
 end
 
-o = s:option(Value, "ntpclienttimeout", translate("Timeout"))
+o = s:option(Value, "ntpclienttimeout", translate("Timeout (sec)"))
 o.datatype = "string"
 function o.cfgvalue(self, section)
     --return fs.readfile("/SDC/Clock.conf") or ""

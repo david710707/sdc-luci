@@ -1,0 +1,92 @@
+<%#
+ Copyright 2008 Steven Barth <steven@midlink.org>
+ Copyright 2008-2011 Jo-Philipp Wich <jow@openwrt.org>
+ Licensed to the public under the Apache License 2.0.
+-%>
+
+<%
+	local syncstatusTmp = luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkTimeNtpSyncStatus --UnLock")
+	local timezoneTmp = luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkTimeTimezone --UnLock")
+	local brightnessTmp = luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkHwBrightness --UnLock")
+	local displayformatTmp = luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkHwTimeFormat --UnLock")
+	local updateDateTimeTmp = luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkTimeUpdateDateTime --UnLock")
+
+	if syncstatusTmp == "0\n" then
+		syncstatusTmp = "[ 已同步 ] " .. luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkTimeNtpSyncSource --UnLock")
+	else
+		syncstatusTmp = "[ 未同步 ] " .. luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkTimeNtpSyncSource --UnLock")
+	end
+
+	local fs = require "nixio.fs"
+	local util = require "luci.util"
+
+	if luci.http.formvalue("status") == "1" then
+		local rv = {
+			syncstatus = syncstatusTmp,
+			timezone = timezoneTmp,
+			brightness = brightnessTmp,
+			displayformat = displayformatTmp,
+			updateDateTime = updateDateTimeTmp,
+		}
+
+		luci.http.prepare_content("application/json")
+		luci.http.write_json(rv)
+
+		return
+	end
+-%>
+
+<%+header%>
+
+<script type="text/javascript" src="<%=resource%>/cbi.js"></script>
+<script type="text/javascript">//<![CDATA[
+	XHR.poll(1, '<%=REQUEST_URI%>', { status: 1 },
+		function(x, info)
+		{
+			var e;
+
+			if (e = document.getElementById('syncstatus'))
+				e.innerHTML = info.syncstatus;
+
+            if (e = document.getElementById('timezone'))
+                    e.innerHTML = info.timezone;
+
+            if (e = document.getElementById('brightness'))
+                    e.innerHTML = info.brightness;
+
+            if (e = document.getElementById('displayformat'))
+                    e.innerHTML = info.displayformat;
+
+            if (e = document.getElementById('updateDateTime'))
+                    e.innerHTML = info.updateDateTime;
+		}
+	);
+//]]></script>
+
+<h2><a id="content" name="content"><%:Status%></a></h2>
+
+<fieldset class="cbi-section">
+	<legend><%:Clock Status%></legend>
+
+	<table width="100%" cellspacing="10">
+		<tr><td width="33%"><%:Sync Status%></td><td id="syncstatus">-</td></tr>
+		<!--<tr><td width="33%"><%:TimeZone%></td><td id="timezone">-</td></tr>
+		<tr><td width="33%"><%:Brightness%></td><td id="brightness">-</td></tr>
+		<tr><td width="33%"><%:Display Format%></td><td id="displayformat">-</td></tr>-->
+		<tr><td width="33%"><%:Update Date Time%></td><td id="updateDateTime">-</td></tr>
+	</table>
+</fieldset>
+
+<%-
+	local incdir = util.libpath() .. "/view/admin_status/index/"
+	if fs.access(incdir) then
+		local inc
+		for inc in fs.dir(incdir) do
+			if inc:match("%.htm$") then
+				include("admin_status/index/" .. inc:gsub("%.htm$", ""))
+			end
+		end
+	end
+-%>
+
+<%+footer%>

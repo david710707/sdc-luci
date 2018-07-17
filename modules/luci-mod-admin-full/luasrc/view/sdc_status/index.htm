@@ -5,17 +5,6 @@
 -%>
 
 <%
-	local syncstatusTmp = luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkTimeNtpSyncStatus --UnLock")
-	local timezoneTmp = luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkTimeTimezone --UnLock")
-	local brightnessTmp = luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkHwBrightness --UnLock")
-	local displayformatTmp = luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkHwTimeFormat --UnLock")
-
-	if syncstatusTmp == "0\n" then
-		syncstatusTmp = luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkTimeNtpSyncSource --UnLock") .. " - [ Sync ]"
-	else
-		syncstatusTmp = luci.sys.exec("/SDC/ClockService --Lock --GetstsChClkTimeNtpSyncSource --UnLock") .. " - [ Out Of Sync ]"
-	end
-
 	local fs = require "nixio.fs"
 	local util = require "luci.util"
 	local stat = require "luci.tools.status"
@@ -561,20 +550,6 @@
 
 			if (e = document.getElementById('conns'))
 				e.innerHTML = progressbar(info.conncount, info.connmax);
-
-			if (e = document.getElementById('syncstatus'))
-				e.innerHTML = info.syncstatus;
-
-                        if (e = document.getElementById('timezone'))
-                                e.innerHTML = info.timezone;
-
-                        if (e = document.getElementById('brightness'))
-                                e.innerHTML = info.brightness;
-
-                        if (e = document.getElementById('displayformat'))
-                                e.innerHTML = info.displayformat;
-
-
 		}
 	);
 //]]></script>
@@ -628,17 +603,6 @@
        </table>
 </fieldset>
 <% end %>
-
-<fieldset class="cbi-section">
-	<legend><%:Clock Status%></legend>
-
-	<table width="100%" cellspacing="10">
-		<tr><td width="33%"><%:Sync Status%></td><td id="syncstatus">-</td></tr>
-		<tr><td width="33%"><%:TimeZone%></td><td id="timezone">-</td></tr>
-		<tr><td width="33%"><%:Brightness%></td><td id="brightness">-</td></tr>
-		<tr><td width="33%"><%:Display Format%></td><td id="displayformat">-</td></tr>
-	</table>
-</fieldset>
 
 <%-
 	local incdir = util.libpath() .. "/view/admin_status/index/"

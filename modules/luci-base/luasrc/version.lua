@@ -20,4 +20,4 @@ luciname    = "LuCI Master"
 luciversion = "git-17.230.06165-679b129"
 
 sdcname     = "SDC NTP Clock"
-sdcversion  = "2018.02.09"
+sdcversion  = "2018.07.17"
